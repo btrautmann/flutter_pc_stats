@@ -61,8 +61,11 @@ app.*.map.json
 # Mono auto generated files
 mono_crash.*
 
+# See https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder
+!android/app/src/debug/
+
 # Build results
-[Dd]ebug/
+[Dd]ebug/*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
