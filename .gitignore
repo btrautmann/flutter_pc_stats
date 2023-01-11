@@ -441,3 +441,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Exceptions
+
+# Impacting rule: [Dd]ebug/
+# The above removes android/app/src/debug/AndroidManifest.xml
+!android/app/src/debug 

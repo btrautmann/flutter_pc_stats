@@ -1,1 +1,0 @@
-C:\Users\Brandon\Development\pc_stats\PC_Client2\PC_Client2.csproj;x64
