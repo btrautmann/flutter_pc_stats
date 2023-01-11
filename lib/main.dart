@@ -1,16 +1,29 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pc_stats/hardware_summary.dart';
 import 'package:pc_stats/provider_logging.dart';
 import 'package:pc_stats/providers.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+// TODO(brandon): Figure out a better way to do this
+// This is required, otherwise we fail to connect to SignalR server
+class _HttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (cert, host, port) => true;
+  }
+}
+
 void main() async {
+  HttpOverrides.global = _HttpOverrides();
   FlutterError.onError = (details) {
     print(details.exceptionAsString());
   };
+  await dotenv.load();
   runZonedGuarded(
     () => runApp(
       ProviderScope(

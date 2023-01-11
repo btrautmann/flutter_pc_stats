@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pc_stats">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="pc_stats"
         android:name="${applicationName}"

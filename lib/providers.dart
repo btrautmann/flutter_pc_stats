@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pc_stats/hardware_summary.dart';
 import 'package:signalr_netcore/http_connection_options.dart';
@@ -9,8 +10,9 @@ import 'package:signalr_netcore/json_hub_protocol.dart';
 
 final hubConnectionProvider = Provider<HubConnection>(
   (ref) {
-    // TODO(brandon): Pull this from an Environment Variable
-    const serverUrl = 'https://localhost:7188/pcstats';
+    final ip = dotenv.env['PC_STATS_IP'];
+    final port = dotenv.env['PC_STATS_PORT'];
+    final serverUrl = "https://$ip:$port/pcstats";
     return HubConnectionBuilder()
         .withUrl(serverUrl, options: HttpConnectionOptions(requestTimeout: 5000))
         .withHubProtocol(JsonHubProtocol())
