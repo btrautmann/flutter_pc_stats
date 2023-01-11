@@ -10,7 +10,8 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
-		_connection = new HubConnectionBuilder().WithUrl("https://localhost:7188/pcstats").Build();
+        var PORT = Environment.GetEnvironmentVariable("PC_STATS_PORT");
+        _connection = new HubConnectionBuilder().WithUrl($"https://localhost:{PORT}/pcstats").Build();
 		_connection.On<string>("MessageReceived", (message) =>
 			{
 				Debug.Write($"MessageReceived: {message}");

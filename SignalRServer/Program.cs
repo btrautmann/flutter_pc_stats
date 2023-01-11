@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Hosting;
 using SignalRServer.Data;
 using SignalRServer.Hubs;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSignalR();
+
+// TODO: Get the IP directly, allow setting PORT only.
+var URL = Environment.GetEnvironmentVariable("PC_STATS_URL");
+var PORT = Environment.GetEnvironmentVariable("PC_STATS_PORT");
+Debug.WriteLine($"Using Environment Variables URL={URL} and PORT={PORT}");
+builder.WebHost.UseUrls();
+builder.WebHost.UseUrls(new string[2] { $"https://{URL}:{PORT}", $"https://localhost:{PORT}"});
 
 var app = builder.Build();
 
