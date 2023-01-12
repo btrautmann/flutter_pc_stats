@@ -89,7 +89,7 @@ class HardwareSummaryNotifier extends StateNotifier<HardwareSummary> {
           _logger.d('Received summary:\n$json');
           state = json.toHardwareSummary();
         });
-        Timer.periodic(const Duration(seconds: 1), (_) async {
+        Timer.periodic(const Duration(seconds: 3), (_) async {
           _logger.d('Polling for hardware summary');
           if (hub.state == HubConnectionState.Connected) {
             await hub.invoke("SendMessage", args: ["Hardware poll"]);

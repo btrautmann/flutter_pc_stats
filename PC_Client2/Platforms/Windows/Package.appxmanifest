@@ -6,7 +6,7 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="maui-package-name-placeholder" Publisher="CN=User Name" Version="0.0.0.0" />
+  <Identity Name="maui-package-name-placeholder" Publisher="CN=Brandon Trautmann" Version="0.1.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="A350F972-B92C-4370-AA1F-FBCB517A27C8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -26,10 +26,10 @@
   </Resources>
 
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
+    <Application Id="App" Executable="$targetnametoken$.exe"  EntryPoint="MauiProgram.cs">
       <uap:VisualElements
-        DisplayName="$placeholder$"
-        Description="$placeholder$"
+        DisplayName="PC_Client"
+        Description="Client for configuring the PC Stats Flutter Application from Windows"
         Square150x150Logo="$placeholder$.png"
         Square44x44Logo="$placeholder$.png"
         BackgroundColor="transparent">

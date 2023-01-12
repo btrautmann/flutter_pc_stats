@@ -12,7 +12,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSignalR();
 
 // TODO: Get the IP directly, allow setting PORT only.
-var URL = Environment.GetEnvironmentVariable("PC_STATS_URL");
+var URL = Environment.GetEnvironmentVariable("PC_STATS_IP");
 var PORT = Environment.GetEnvironmentVariable("PC_STATS_PORT");
 Debug.WriteLine($"Using Environment Variables URL={URL} and PORT={PORT}");
 builder.WebHost.UseUrls();

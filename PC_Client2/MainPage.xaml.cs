@@ -23,11 +23,5 @@ public partial class MainPage : ContentPage
 			Dispatcher.Dispatch(async () => await _connection.StartAsync());
 		});
 	}
-
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		Debug.Write("OnCounterClicked");
-		
-	}
 }
 

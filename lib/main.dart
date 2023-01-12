@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pc_stats/hardware_summary.dart';
@@ -25,6 +26,9 @@ void main() async {
   FlutterError.onError = (details) {
     logger.e(details);
   };
+  WidgetsFlutterBinding.ensureInitialized();
+  // Removes the status bar and bottom navigation bar
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
   await dotenv.load();
   runZonedGuarded(
@@ -33,38 +37,36 @@ void main() async {
         observers: [
           ProviderLogger(),
         ],
-        child: const MyApp(),
+        child: const PCStats(),
       ),
     ),
     (error, stack) => logger.e(error),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PCStats extends StatelessWidget {
+  const PCStats({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'PC Stats',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'PC Stats'),
+      home: const Dashboard(),
     );
   }
 }
 
-class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class Dashboard extends ConsumerWidget {
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hardwareSummary = ref.watch(hardwareSummaryNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
       // ignore: prefer_const_constructors
       body: hardwareSummary.when(
         unavailable: () => const Center(
@@ -125,32 +127,36 @@ class _SimpleGauge extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SfRadialGauge(
-          enableLoadingAnimation: true,
-          animationDuration: 750,
-          axes: [
-            RadialAxis(
-              axisLineStyle: const AxisLineStyle(
-                thicknessUnit: GaugeSizeUnit.factor,
-                thickness: 0.15,
-              ),
-              pointers: [
-                RangePointer(
-                  value: value,
-                  cornerStyle: CornerStyle.bothCurve,
-                  enableAnimation: true,
-                  animationDuration: 1200,
-                  sizeUnit: GaugeSizeUnit.factor,
-                  gradient: const SweepGradient(
-                    colors: <Color>[Color(0xFF6A6EF6), Color(0xFFDB82F5)],
-                    stops: <double>[0.25, 0.75],
-                  ),
-                  color: Theme.of(context).colorScheme.secondary,
-                  width: 0.15,
+        SizedBox(
+          width: 200,
+          height: 200,
+          child: SfRadialGauge(
+            enableLoadingAnimation: true,
+            animationDuration: 750,
+            axes: [
+              RadialAxis(
+                axisLineStyle: const AxisLineStyle(
+                  thicknessUnit: GaugeSizeUnit.factor,
+                  thickness: 0.15,
                 ),
-              ],
-            )
-          ],
+                pointers: [
+                  RangePointer(
+                    value: value,
+                    cornerStyle: CornerStyle.bothCurve,
+                    enableAnimation: true,
+                    animationDuration: 1200,
+                    sizeUnit: GaugeSizeUnit.factor,
+                    gradient: const SweepGradient(
+                      colors: <Color>[Color(0xFF6A6EF6), Color(0xFFDB82F5)],
+                      stops: <double>[0.25, 0.75],
+                    ),
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: 0.15,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
         Text(label),
       ],
