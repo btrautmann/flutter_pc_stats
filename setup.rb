@@ -9,10 +9,10 @@ ip = my_first_private_ipv4
 puts "Using IP address #{ip.ip_address}"
 
 # Echo IP into .env file for use
-# File.open('assets/.env', 'w') do |file|
-#   file.write("PC_STATS_IP=#{ip.ip_address}\n")
-#   file.write('PC_STATS_PORT=7188')
-# end
+File.open('.env', 'w') do |file|
+  file.write("PC_STATS_IP=#{ip.ip_address}\n")
+  file.write('PC_STATS_PORT=7188')
+end
 
 # Setup ENV variables with IP using default PORT
 ENV['PC_STATS_IP'] = ip.ip_address
@@ -21,4 +21,3 @@ ENV['PC_STATS_PORT'] = '7188'
 # Install FVM and install flutter
 
 # Flutter run on connected device
-puts `flutter run -v`

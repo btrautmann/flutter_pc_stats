@@ -20,9 +20,12 @@ class _HttpOverrides extends HttpOverrides {
 
 void main() async {
   HttpOverrides.global = _HttpOverrides();
+  final container = ProviderContainer();
+  final logger = container.read(loggerProvider);
   FlutterError.onError = (details) {
-    print(details.exceptionAsString());
+    logger.e(details);
   };
+
   await dotenv.load();
   runZonedGuarded(
     () => runApp(
@@ -33,7 +36,7 @@ void main() async {
         child: const MyApp(),
       ),
     ),
-    (error, stack) => print(error),
+    (error, stack) => logger.e(error),
   );
 }
 
@@ -64,7 +67,9 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(title: Text(title)),
       // ignore: prefer_const_constructors
       body: hardwareSummary.when(
-        unavailable: () => const CircularProgressIndicator(),
+        unavailable: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
         available: (cpu, gpus) => _SummaryAvailable(
           cpu: cpu,
           gpus: gpus,
