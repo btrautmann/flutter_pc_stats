@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pc_stats/hardware_summary.dart';
 import 'package:pc_stats/provider_logging.dart';
 import 'package:pc_stats/providers.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 // TODO(brandon): Figure out a better way to do this
@@ -29,6 +30,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Removes the status bar and bottom navigation bar
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  try {
+    await ScreenBrightness().setScreenBrightness(1.0);
+  } on Exception catch (e) {
+    logger.e('Could not set brightness: $e');
+  }
 
   await dotenv.load();
   runZonedGuarded(

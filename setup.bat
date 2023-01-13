@@ -1,4 +1,5 @@
 :: Pull latest changes from repo and grab dependencies
+cd C:\Users\Brandon\Development\pc_stats
 echo Fetching latest changes...
 CALL git pull
 CALL flutter pub get
@@ -17,10 +18,7 @@ SETX PC_STATS_IP "%NetworkIP%"
 SETX PC_STATS_PORT "7188"
 
 :: Start SignalR server
-:: START SignalRServer/bin/Release/net6.0/SignalRServer.exe
-
-:: Start Desktop application
-:: START PC_Client2/bin/Debug/net6.0-windows10.0.19041.0/win10-x86/PC_Client2.exe
+START SignalRServer/bin/Release/net6.0/SignalRServer.exe
 
 :: Start Flutter application
-:: CALL flutter run -d ZY224LJPKC
+CALL flutter run -d ZY224LJPKC

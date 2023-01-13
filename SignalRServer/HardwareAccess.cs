@@ -8,7 +8,7 @@ using System.Diagnostics;
 using LibreHardwareMonitor.Hardware.CPU;
 using LibreHardwareMonitor.Hardware.Gpu;
 
-namespace PC_Client2
+namespace SignalRServer
 {
 
     internal class HardwareAccess
@@ -31,7 +31,7 @@ namespace PC_Client2
 
         public static Dictionary<String, Dictionary<String, String>> GetHardwareSummary()
         {
-            Computer computer = new Computer
+            Computer computer = new()
             {
                 IsCpuEnabled = true,
                 IsGpuEnabled = true,
