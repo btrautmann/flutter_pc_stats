@@ -101,15 +101,27 @@ class _SummaryAvailable extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _SimpleGauge(
-            value: cpu.totalLoad,
-            label: cpu.name,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              _SimpleGauge(
+                value: cpu.totalLoad,
+                label: cpu.name,
+              ),
+              Text(cpu.packageTemperature.toString()),
+            ],
           ),
           ...[
             ...gpus.map(
-              (gpu) => _SimpleGauge(
-                value: gpu.coreLoad,
-                label: gpu.name,
+              (gpu) => Stack(
+                alignment: Alignment.center,
+                children: [
+                  _SimpleGauge(
+                    value: gpu.coreLoad,
+                    label: gpu.name,
+                  ),
+                  Text(gpu.coreTemperature.toString()),
+                ],
               ),
             ),
           ],

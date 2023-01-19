@@ -20,23 +20,31 @@ class HardwareSummary with _$HardwareSummary {
 class Cpu extends Equatable {
   final String name;
   final double totalLoad;
+  final double packageTemperature;
 
   const Cpu({
     required this.name,
     required this.totalLoad,
+    required this.packageTemperature,
   });
 
   @override
-  List<Object?> get props => [name, totalLoad];
+  List<Object?> get props => [
+        name,
+        totalLoad,
+        packageTemperature,
+      ];
 }
 
 class Gpu extends Equatable {
   final String name;
   final double coreLoad;
+  final double coreTemperature;
 
   const Gpu({
     required this.name,
     required this.coreLoad,
+    required this.coreTemperature,
   });
 
   @override
@@ -53,23 +61,39 @@ extension HardwareSummaryX on Map<String, dynamic> {
       return (element.value["type"] as String).contains("Gpu");
     }).toList();
 
-    final cpuTotalLoad = (cpuEntry.value as Map<String, dynamic>).keys.singleWhere((key) {
-      return key.contains('CPU Total-Load');
-    });
+    final cpuTotalLoad = cpuEntry.keyForValue('CPU Total-Load');
+    final cpuPackageTemperature = cpuEntry.keyForValue('CPU Package-Temperature');
+    final map = cpuEntry.value as Map<String, dynamic>;
+
     final cpu = Cpu(
       name: cpuEntry.key,
-      totalLoad: double.parse((cpuEntry.value as Map<String, dynamic>)[cpuTotalLoad]),
+      totalLoad: double.parse(map[cpuTotalLoad]),
+      packageTemperature: double.parse(map[cpuPackageTemperature]),
     );
 
-    final List<Gpu?> gpus = gpuEntries.map((entry) {
-      final map = entry.value as Map<String, dynamic>;
-      final totalLoad = map.keys.singleWhereOrNull((key) => (key).contains('GPU Core-Load'));
-      return totalLoad == null ? null : Gpu(name: entry.key, coreLoad: double.parse(map[totalLoad]));
+    final List<Gpu?> gpus = gpuEntries.map((gpuEntry) {
+      final totalLoad = gpuEntry.keyForValue('GPU Core-Load');
+      final coreTemperature = gpuEntry.keyForValue('GPU Core-Temperature');
+      final map = gpuEntry.value as Map<String, dynamic>;
+      return totalLoad == null || coreTemperature == null
+          ? null
+          : Gpu(
+              name: gpuEntry.key,
+              coreLoad: double.parse(map[totalLoad]),
+              coreTemperature: double.parse(map[coreTemperature]),
+            );
     }).toList();
 
     return HardwareSummary.available(
       cpu: cpu,
       gpus: gpus.whereNotNull().toList(),
     );
+  }
+}
+
+extension on MapEntry<String, dynamic> {
+  String? keyForValue(String v) {
+    final map = value as Map<String, dynamic>;
+    return map.keys.singleWhereOrNull((key) => key.contains(v));
   }
 }
